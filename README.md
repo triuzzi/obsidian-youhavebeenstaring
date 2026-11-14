@@ -60,6 +60,11 @@ Original plugin by [Felix Almer](https://almer.dev), published as
 This rewrite keeps that plugin's id, manifest metadata and behaviour so existing vaults load it
 unchanged.
 
-The upstream repository publishes no license file. This rewrite of it is offered under the MIT
-license (see [LICENSE](LICENSE)); the attribution above is a request to honour, and the
-repository will be taken down if the original author objects.
+The root cause is also fixed at the source in a fork: the upstream build targets ES5, which
+cannot subclass the native `obsidian.Plugin` class, so the fix is
+[`fxal/obsidian-youhavebeenstaring-plugin#13`](https://github.com/fxal/obsidian-youhavebeenstaring-plugin/pull/13)
+(one-line `tsconfig.json` change, reported in
+[#14](https://github.com/fxal/obsidian-youhavebeenstaring-plugin/issues/14)). The upstream
+repository publishes no license file, although its `package.json` declares MIT; the attribution
+above is a request to honour, and the repository will be taken down if the original author
+objects.
