@@ -1,39 +1,54 @@
-# YouHaveBeenStaring — Obsidian 1.15+ rewrite
+# YouHaveBeenStaring (continued)
 
-Two status-bar counters: how long this session has been running, and how long you have stared at this vault in total.
+Two status-bar counters: how long this session has been running, and how long you have stared at
+this vault in total.
 
-## Why this repository exists
+This is a maintained continuation of [`fxal/obsidian-youhavebeenstaring-plugin`](https://github.com/fxal/obsidian-youhavebeenstaring-plugin),
+which stopped loading on current Obsidian.
 
-The community plugin [`fxal/obsidian-youhavebeenstaring-plugin`](https://github.com/fxal/obsidian-youhavebeenstaring-plugin)
-was last released as 1.2.2 in 2021 and no longer loads on current Obsidian (1.15.x). Its
-TypeScript build targets ES5, so the emitted `__extends` helper instantiates the base class
-with `_super.apply(this, arguments)`. `obsidian.Plugin` is a native ES class now, and calling
-a native class without `new` throws:
+## Install
+
+**Community plugins** — search for "YouHaveBeenStaring (continued)" in **Settings → Community
+plugins → Browse**.
+
+**Before it is listed, or to track this branch:** use [BRAT](https://github.com/TfTHacker/obsidian42-brat)
+with `triuzzi/obsidian-youhavebeenstaring`.
+
+**Manually:** download `main.js` and `manifest.json` from the [latest release](https://github.com/triuzzi/obsidian-youhavebeenstaring/releases/latest)
+into `<vault>/.obsidian/plugins/youhavebeenstaring-continued/`, then enable the plugin.
+
+The plugin id is `youhavebeenstaring-continued`, so it installs alongside the original
+`youhavebeenstaring-plugin` rather than overwriting it. Settings and recorded uptime live in
+`data.json` and are compatible with the original: copy that file across to keep your total.
+
+## Why this exists
+
+The original plugin was last released as 1.2.2 in 2021 and no longer loads on current Obsidian.
+Its TypeScript build targets ES5, so the emitted `__extends` helper instantiates the base class
+with `_super.apply(this, arguments)`. `obsidian.Plugin` is a native ES class now, and calling a
+native class without `new` throws:
 
 ```
 Plugin failure: youhavebeenstaring-plugin
 TypeError: Class constructor ... cannot be invoked without 'new'
 ```
 
-`main.js` here is a rewrite of that plugin as native ES classes. Behaviour, settings keys,
-status-bar texts and `data.json` layout are unchanged, so an existing vault keeps its
-accumulated uptime. There is no build step — `main.js` is the source.
+`main.js` here is that plugin rewritten as native ES classes. Behaviour, settings keys,
+status-bar texts and the `data.json` layout are unchanged. There is no build step — `main.js` is
+the source.
 
-Changes relative to 1.2.2, beyond the class syntax:
+The same root cause is fixed at the source upstream in
+[`fxal/obsidian-youhavebeenstaring-plugin#13`](https://github.com/fxal/obsidian-youhavebeenstaring-plugin/pull/13)
+(a one-line `tsconfig.json` target change), reported in
+[#14](https://github.com/fxal/obsidian-youhavebeenstaring-plugin/issues/14).
 
+Changes relative to 1.2.2:
+
+- Native ES classes instead of the ES5 `__extends` output, so it loads again.
 - `moment` comes from the `obsidian` module instead of `window.moment`.
-- The ribbon button uses the `eye` icon; 1.2.2 passed `any-key`, which is not a valid Lucide
-  id, so the button rendered empty.
+- The ribbon button uses the `eye` icon; 1.2.2 passed `any-key`, which is not a valid Lucide id,
+  so the button rendered empty.
 - The 1-second tick no longer runs the accumulation through a comma expression.
-
-## Install
-
-Copy `main.js` and `manifest.json` into `<vault>/.obsidian/plugins/youhavebeenstaring-plugin/`,
-reload Obsidian (or toggle the plugin off and on), then enable it in **Settings → Community
-plugins**.
-
-The plugin is not in the community plugin store, and it must not be replaced by the store
-release: doing so reinstalls the broken 2021 bundle.
 
 ## Behaviour
 
@@ -55,16 +70,8 @@ release: doing so reinstalls the broken 2021 bundle.
 
 ## Attribution
 
-Original plugin by [Felix Almer](https://almer.dev), published as
-[`fxal/obsidian-youhavebeenstaring-plugin`](https://github.com/fxal/obsidian-youhavebeenstaring-plugin).
-This rewrite keeps that plugin's id, manifest metadata and behaviour so existing vaults load it
-unchanged.
-
-The root cause is also fixed at the source in a fork: the upstream build targets ES5, which
-cannot subclass the native `obsidian.Plugin` class, so the fix is
-[`fxal/obsidian-youhavebeenstaring-plugin#13`](https://github.com/fxal/obsidian-youhavebeenstaring-plugin/pull/13)
-(one-line `tsconfig.json` change, reported in
-[#14](https://github.com/fxal/obsidian-youhavebeenstaring-plugin/issues/14)). The upstream
-repository publishes no license file, although its `package.json` declares MIT; the attribution
-above is a request to honour, and the repository will be taken down if the original author
-objects.
+Original plugin by [Felix Almer](https://almer.dev). This continuation keeps its id-independent
+behaviour and manifest fields, and is offered under the MIT license (see [LICENSE](LICENSE)). The
+upstream repository publishes no license file, although its `package.json` declares MIT; the
+attribution above is a request to honour, and this repository will be taken down if the original
+author objects.
