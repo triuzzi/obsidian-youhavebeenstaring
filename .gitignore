@@ -1,0 +1,3 @@
+# Obsidian writes per-vault plugin settings and state here
+data.json
+.DS_Store
